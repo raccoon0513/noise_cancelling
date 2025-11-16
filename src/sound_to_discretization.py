@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pyaudio
-import time
 
 CHUNK = 1024  # 한 번에 처리할 샘플 수
 FORMAT = pyaudio.paInt16 # 샘플 형식 (16비트 정수)
