@@ -7,7 +7,7 @@ CHUNK = 1024  # 한 번에 처리할 샘플 수
 FORMAT = pyaudio.paInt16 # 샘플 형식 (16비트 정수)
 CHANNELS = 1 # 모노
 RATE = 44100 # 샘플링 레이트 (Hz)
-DURATION = 0.05 # 그래프를 업데이트할 시간 간격 (초)
+DURATION = 0.2 # 그래프를 업데이트할 시간 간격, default = 0.05
 
 #큐베이스와 비슷하게 가시형 주파수 설정함
 CUSTOM_TICKS = [20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000]
@@ -61,7 +61,7 @@ def update_plot(frame):
     line.set_ydata(magnitude)
     return line,
 
-# --- 5. 애니메이션 시작 및 실행 ---
+# 애니메이션 시작 및 실행 ---
 ani = FuncAnimation(fig, update_plot, interval=DURATION * 1000, blit=False) 
 
 try:
@@ -71,7 +71,7 @@ except KeyboardInterrupt:
 except Exception as e:
     print(f"애니메이션 실행 중 오류 발생: {e}")
 
-# --- 6. 정리 ---
+#정리
 if 'stream' in locals() and stream.is_active():
     stream.stop_stream()
     stream.close()

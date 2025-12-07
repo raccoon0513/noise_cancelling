@@ -1,56 +1,33 @@
 import math
-#quiz : int 1 to 3  x^3 dx 
-# result = n^4/4 + C,81/4-1/4  = 20
-# h/2 ( f(a) + f(b))+ (h * sigma {i=1}{n-1}{f(a+(i*h))})
-
-def f(x):
-    """적분할 함수"""
-    return math.sqrt(math.sin(x)-(math.sin(x)**3))
-    # return x**2
-
 def integral (f,a,b,n):
     """f=함수
     a=시작점
     b=도착점
     n=알고리즘 시도할 횟수"""
-    h=(b-a)/n #h=func{a}{b}
+    h=(b-a)/n 
     result=(f(a)+f(b))/2
     for i in range(1,n):
         result += (f(a+(i*h)))
     return result*h
 
-def floor_n(num, n):
-    """인수, n번째 자리까지 표시"""
-    return math.floor(num * (10**n) ) / (10**n)
-
-round = 4 #몇번째 자리까지 비교할 것인가
-answer = floor_n(2/3, round)
-a=0
-b=(math.pi/2)
-
-# answer = floor_n(2+(1/3), round)
-# a=1
-# b=2
+def compare(return_value, answers):
+    """approximation(근사값)"""
+    approximation = min(answers,key=lambda x: abs(x-return_value))
+    answer_index = answers.index(approximation)
+    return answer_index
 # ===============================================================
-upper = 10000 #더하는 수
-def answer_check(n):
-    submit = integral(f, a,b, n)
-    if(answer==floor_n(submit, round)):
-        return True
-    return False
-def find_count(count, upper):
-    """몇번째 회차인지"""
-    # print(f"No.{count}, trying...")
-    div_upper = math.floor(upper/10)
-    if(div_upper<1):
-        return count, div_upper
-    if(answer_check(count)):
-        return find_count(count-upper, div_upper)
-    if(not answer_check(count)):
-        return find_count(count+upper, upper)
-    return count
-best_count = find_count(1, upper)[0]
-print(best_count)
-print(integral(f, a, b, best_count))    
-print(f"정답은 {answer}\n근사치는 {integral(f, a, b, best_count)}\n시도 횟수 {best_count}")
+#문제 : \int_{1}^{2}\frac{\sqrt{4}}{3}\left(x+x\ln x\right)dx
+quiz = lambda x : ((math.sqrt(3)/4)*(x+(x*math.log(x))))
+answers = [
+    (math.sqrt(3) * (3 + (8 * math.log(2)))) / 16,
+    (math.sqrt(3) * (5 + (12 * math.log(2)))) / 24,
+    (math.sqrt(3) * (1 + (12 * math.log(2)))) / 16,
+    (math.sqrt(3) * (1 + (2 * math.log(2)))) / 4,
+    (math.sqrt(3) * (1 + (9 * math.log(2)))) / 12
+]
+
+return_value = integral(f=quiz, a=1, b=2, n=10000)
+answer_index = compare(return_value=return_value, answers=answers)
+print(f"구한 근사치는 {return_value}")
+print(f"답은 {answer_index+1}번, {answers[answer_index]}")
 # ===============================================================
